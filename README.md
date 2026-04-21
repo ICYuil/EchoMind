@@ -1,4 +1,10 @@
-# EchoMind - AI 智能面试平台
+<div align="center">
+  <img src="logo.png" alt="EchoMind Logo" width="150" height="150">
+  <h1>EchoMind</h1>
+  <p>回响智面 - AI 智能面试平台</p>
+</div>
+
+---
 
 一个基于 AI 的智能面试平台，提供模拟面试、简历分析、知识库管理等功能。
 
@@ -160,7 +166,7 @@ EchoMind/
 │   │   │   │       ├── infrastructure/  # 基础设施层 (JPA 仓库、向量存储、文件存储)
 │   │   │   │       └── modules/     # 业务模块
 │   │   │   └── resources/
-│   │   │       ├── application.properties  # Spring Boot 配置
+│   │   │       ├── application.yml  # Spring Boot 配置
 │   │   │       └── static/          # 静态资源
 │   │   └── test/                    # 测试代码
 │   ├── build.gradle                 # Gradle 构建配置
@@ -175,6 +181,7 @@ EchoMind/
 │   │   ├── App.vue                 # 根组件
 │   │   └── main.js                 # 应用入口
 │   ├── public/                     # 公共资源
+│   │   └── logo.png               # 项目 Logo
 │   ├── index.html                  # HTML 入口
 │   ├── package.json                # 项目依赖配置
 │   └── vite.config.js              # Vite 配置
@@ -183,6 +190,9 @@ EchoMind/
 │       └── init.sql                # PostgreSQL 初始化脚本
 ├── docker-compose.yml              # Docker 服务编排
 ├── .env.example                    # 环境变量示例
+├── .gitignore                      # Git 忽略文件
+├── LICENSE                         # 许可证
+├── logo.png                        # 项目 Logo
 ├── settings.gradle                 # Gradle 项目配置
 ├── gradlew / gradlew.bat          # Gradle 包装脚本
 └── README.md                       # 项目说明
@@ -423,4 +433,7 @@ docker-compose logs -f postgres  # 数据库
 
 ---
 
-*EchoMind - 让面试更智能，让招聘更高效*
+<div align="center">
+  <p><strong>EchoMind - 回响智面</strong></p>
+  <p>让面试更智能，让招聘更高效</p>
+</div>

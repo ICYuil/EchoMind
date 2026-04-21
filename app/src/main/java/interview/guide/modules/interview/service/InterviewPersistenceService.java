@@ -9,7 +9,7 @@ import interview.guide.modules.interview.model.InterviewQuestionDTO;
 import interview.guide.modules.interview.model.InterviewReportDTO;
 import interview.guide.modules.interview.model.InterviewSessionEntity;
 import interview.guide.modules.interview.pojo.AddQuestionEntity;
-import interview.guide.modules.interview.pojo.DTO.AddQuestionDTO;
+import interview.guide.modules.interview.pojo.dto.AddQuestionDTO;
 import interview.guide.modules.interview.repository.InterviewAddRepository;
 import interview.guide.modules.interview.repository.InterviewAnswerRepository;
 import interview.guide.modules.interview.repository.InterviewSessionRepository;

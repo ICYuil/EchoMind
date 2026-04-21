@@ -1,4 +1,4 @@
-package interview.guide.modules.interview.Util;
+package interview.guide.modules.interview.util;
 
 public class QuestionUtil {
 

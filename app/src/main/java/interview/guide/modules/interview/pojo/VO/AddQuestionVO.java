@@ -1,4 +1,4 @@
-package interview.guide.modules.interview.pojo.VO;
+package interview.guide.modules.interview.pojo.vo;
 
 import interview.guide.modules.interview.model.InterviewQuestionDTO;
 import lombok.AllArgsConstructor;

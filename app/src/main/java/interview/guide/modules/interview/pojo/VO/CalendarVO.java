@@ -1,4 +1,4 @@
-package interview.guide.modules.interview.pojo.VO;
+package interview.guide.modules.interview.pojo.vo;
 
 import lombok.Builder;
 import lombok.Data;

@@ -1,0 +1,135 @@
+# AI Interview Platform Configuration
+# 智能AI面试官平台配置
+dashscope:
+  api-key: ${AI_BAILIAN_API_KEY:your_api_key_here}
+  asr:
+    model: qwen3-omni-flash-2025-12-01
+    enable-lid: true
+    enable-itn: false
+server:
+  port: 8080
+  address: 0.0.0.0
+spring:
+  application:
+    name: ai-interview-platform
+
+  # 启用虚拟线程 (Java 21+)
+  # 显著提升 I/O 密集型场景的并发能力，特别适合 AI 调用和 SSE 长连接
+  threads:
+    virtual:
+      enabled: true
+
+  # PostgreSQL数据库配置
+  datasource:
+    url: jdbc:postgresql://localhost:5432/interview_guide
+    username: postgres
+    password: 123456
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create #首次启动用 create，表创建成功后，改回 update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB  # 支持知识库上传（简历限制在业务层检查）
+      max-request-size: 50MB
+
+
+  # Redisson配置 (使用 spring.redis.redisson，参考官方文档)
+  redis:
+    redisson:
+      config: |
+        singleServerConfig:
+          address: "redis://localhost:6379"
+          database: 0
+          connectionMinimumIdleSize: 10
+          connectionPoolSize: 64
+          subscriptionConnectionMinimumIdleSize: 1
+          subscriptionConnectionPoolSize: 50
+
+  # Spring AI - 阿里云DashScope (OpenAI兼容模式)
+  ai:
+    openai:
+      base-url: https://dashscope.aliyuncs.com/compatible-mode
+      #base-url: http://123.56.188.25:8000
+      api-key: ${AI_BAILIAN_API_KEY:your_api_key_here}
+      chat:
+        options:
+          model: qwen-plus
+          temperature: 0.2
+      # Embedding模型配置 - 使用text-embedding-v3
+      embedding:
+        options:
+          model: text-embedding-v3
+    # 禁用自动重试机制，让异常立即返回
+    retry:
+      max-attempts: 1  # 不重试，失败立即返回
+      on-client-errors: false
+    # PostgreSQL Vector Store配置
+    vectorstore:
+      pgvector:
+        index-type: HNSW
+        distance-type: COSINE_DISTANCE
+        dimensions: 1024  # text-embedding-v3实际生成的向量维度
+        initialize-schema: true # 开发环境设置为 true，方便快速启动。生产环境设置为 false，手动管理数据库 schema，避免意外变更。
+        remove-existing-vector-store-table: false  # 保留现有表和数据
+
+# Application custom configuration
+app:
+  ai:
+    # 结构化输出重试次数（用于 BeanOutputConverter 解析失败时的业务层重试）
+    structured-max-attempts: 2
+    # 重试时是否将上次错误原因注入提示词，帮助模型定向修复输出
+    structured-include-last-error: true
+    rag:
+      rewrite:
+        enabled: true
+      search:
+        short-query-length: 4
+        topk-short: 20
+        topk-medium: 12
+        topk-long: 8
+        min-score-short: 0.18
+        min-score-default: 0.28
+  interview:
+    follow-up-count: 1
+    evaluation:
+      batch-size: 8
+  resume:
+      upload-dir: ${java.io.tmpdir}/ai-interview/resumes
+      allowed-types:
+        - application/pdf
+        - application/msword
+        - application/vnd.openxmlformats-officedocument.wordprocessingml.document
+        - text/plain
+      # oss 存储配置
+  storage:
+        accessKey: ${APP_STORAGE_ACCESS_KEY:minioadmin}
+        endpoint: ${APP_STORAGE_ENDPOINT:http://localhost:9000}
+        secretKey: ${APP_STORAGE_SECRET_KEY:minioadmin}
+        bucket: ${APP_STORAGE_BUCKET:interview-guide}
+        region: ${APP_STORAGE_REGION:us-east-1}
+  tts :
+      api-key: ${AI_BAILIAN_API_KEY:your_api_key_here}
+      endpoint: https://api.siliconflow.cn/v1/audio/speech
+      #endpoint: http://123.56.188.25:8000
+      model: FunAudioLLM/CosyVoice2-0.5B
+      voice: alex
+      enabled: true
+      connect-timeout: 30000  # 连接超时 30 秒
+      read-timeout: 120000    # 读取超时 120 秒 (长文本 TTS 需要更长时间)
+    # CORS配置 - React前端
+  cors:
+      allowed-origins: http://localhost:5173,http://localhost:5174,http://localhost:80,http://113.54.242.14:5173
+
+# JWT配置
+jwt:
+  secret: echomind-secret-key-for-jwt-token-generation-please-change-in-production
+  expiration: 604800000  # 7天（毫秒）
